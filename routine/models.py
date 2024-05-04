@@ -1,23 +1,15 @@
 from django.db import models
-from django.contrib.auth.models import User
-from django.utils.text import slugify
+from django.conf import settings
 
 
 class Routine(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    slug = models.SlugField()
+    slug = models.SlugField(blank=True, max_length=110)
 
     def __str__(self):
         return self.name
     
-    def save(self, *args, **kwargs):
-        if self.id is None:
-            self.slug = slugify(self.name)
-
-        super(Routine, self).save(*args, **kwargs)
-    
-
 class Class(models.Model):
     SUNDAY = 0
     MONDAY = 1
@@ -41,8 +33,8 @@ class Class(models.Model):
     day = models.PositiveIntegerField(choices=day_choices)
     start_time = models.TimeField()
     end_time = models.TimeField()
-    subject = models.CharField(max_length=100)
-    teacher_short_name = models.CharField(max_length=100)
+    subject = models.CharField(max_length=30)
+    teacher_short_name = models.CharField(max_length=30)
 
     def __str__(self):
         return f"{self.subject} on {self.day} in {self.routine.name}"
