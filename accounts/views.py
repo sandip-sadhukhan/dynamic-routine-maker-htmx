@@ -4,14 +4,12 @@ from accounts.forms import LoginForm
 from django.http import HttpResponse, Http404
 from django.views.decorators.http import require_POST
 from accounts.decorators import redirect_authenticated_user
+from django.urls import reverse
 
 
 @require_POST
 @redirect_authenticated_user
 def login(request):
-    if request.user.is_authenticated: 
-        raise Http404
-
     form = LoginForm(request.POST)
 
     if not form.is_valid():
@@ -24,7 +22,7 @@ def login(request):
     if user is not None:
         authLogin(request, user)
         response = HttpResponse()
-        response["HX-Redirect"] = "dashboard/"
+        response["HX-Redirect"] = reverse("dashboard")
         return response
     else:
         form.add_error("password", "Invalid credentials")
