@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from routine import helpers
 
 
 class Routine(models.Model):
@@ -9,7 +10,17 @@ class Routine(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+    def save(self, *args, **kwargs):
+        created = self.id is None
+
+        # Generate a slug if the routine is being created
+        if created:
+            self.slug = helpers.generate_slug_for_routine(self.name, Routine)
+
+        super().save(*args, **kwargs)
+
+
 class Class(models.Model):
     SUNDAY = 0
     MONDAY = 1
