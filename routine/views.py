@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from accounts.decorators import redirect_authenticated_user
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_http_methods
 from routine import forms, models
 
 @redirect_authenticated_user
@@ -28,3 +28,15 @@ def create_routine(request):
         return response
 
     return render(request, "forms/routine-form.html", {"routineForm": form})
+
+@login_required
+@require_http_methods(["DELETE"])
+def delete_routine(request, routine_id):
+    try:
+        routine = models.Routine.objects.get(id=routine_id, user=request.user)
+        routine.delete()
+        routines = request.user.routine_set.all()
+        context = {"routines": routines, "oob": True}
+        return render(request, "partials/routines.html", context)
+    except models.Routine.DoesNotExist:
+        raise Http404
