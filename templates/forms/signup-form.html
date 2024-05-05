@@ -1,0 +1,40 @@
+<form hx-post="{% url 'signup' %}" hx-swap="outerHTML">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <div class="input-group has-validation">
+            <input
+                type="email"
+                name="email"
+                class="form-control{% if signupForm.email.errors %} is-invalid{% endif %}"
+                value="{{signupForm.data.email}}"
+                required
+            />
+            {% if signupForm.email.errors %}
+            <div class="invalid-feedback">{{ signupForm.email.errors.0 }}</div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <div class="input-group has-validation">
+            <input
+                name="password"
+                type="password"
+                class="form-control {% if signupForm.password.errors %} is-invalid {% endif %}"
+                value="{{ signupForm.data.password }}"
+                required
+            />
+            {% if signupForm.password.errors %}
+            <div class="invalid-feedback">
+                {{ signupForm.password.errors.0 }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="d-grid mt-4">
+        <button type="submit" class="btn btn-primary">Signup</button>
+    </div>
+</form>
