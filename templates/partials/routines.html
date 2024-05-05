@@ -10,7 +10,7 @@
                     <a href="#" target="_blank" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-title="Open your public routine link">
                         <i class="bi bi-box-arrow-up-right"></i>
                     </a>
-                    <a class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-title="Edit your routine">
+                    <a href="{% url 'edit-routine' routine.id %}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-title="Edit your routine">
                         <i class="bi bi-pencil-square"></i>
                     </a>
                     <button hx-delete="{% url 'delete-routine' routine.id %}" hx-headers='{"X-CSRFTOKEN": "{{ csrf_token }}"}' hx-confirm="Are you sure? You can't undo this action afterwards." class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-title="Delete your routine">

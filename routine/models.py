@@ -48,4 +48,4 @@ class Class(models.Model):
     teacher_short_name = models.CharField(max_length=30)
 
     def __str__(self):
-        return f"{self.subject} on {self.day} in {self.routine.name}"
+        return f"{self.subject} on {dict(self.day_choices).get(self.day)} in {self.routine.name}"
