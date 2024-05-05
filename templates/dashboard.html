@@ -8,7 +8,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-dark text-bg-primary">
         <div class="container">
-          <a class="navbar-brand d-flex align-items-center gap-2" href="#"><img src="{% static 'images/favicon.png' %}" alt="Logo" class="img-fluid" width="25"> Dashboard</a>
+          <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'dashboard' %}"><img src="{% static 'images/favicon.png' %}" alt="Logo" class="img-fluid" width="25"> Dashboard</a>
           <a href="{% url 'logout' %}" class="btn btn-light btn-sm">Logout</a>
         </div>
     </nav>
