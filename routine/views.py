@@ -4,10 +4,10 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
 @redirect_authenticated_user
-def homePage(request):
-    return render(request, "index.html")
+def home(request):
+    return render(request, "home.html")
 
 @login_required
 def dashboard(request):
-    return HttpResponse("hi")
-    return render(request, "dashboard.html")
+    routines = request.user.routine_set.all()
+    return render(request, "dashboard.html", {"routines": routines})
