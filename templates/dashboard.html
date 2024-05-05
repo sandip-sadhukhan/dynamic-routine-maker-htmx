@@ -24,34 +24,8 @@
                     </div>
                 </div>
                 <hr class="mt-1">
-
-                <div class="d-flex flex-column gap-3 my-3">
-                    {% if routines %}
-                        {% for routine in routines %}
-                            <div class="py-3 px-4 rounded-2 shadow-sm d-flex justify-content-between align-items-center bg-light">
-                                <a href="#" class="text-decoration-none text-dark">
-                                    <h5 class="fw-bold fs-5 m-0"><i class="bi bi-arrow-right"></i> {{ routine.name }}</h5>
-                                </a>
-
-                                <div class="d-flex align-items-center gap-2">
-                                    <a href="#" target="_blank" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-title="Open your public routine link">
-                                        <i class="bi bi-box-arrow-up-right"></i>
-                                    </a>
-                                    <a class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-title="Edit your routine">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-title="Delete your routine">
-                                        <i class="bi bi-archive"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="alert alert-warning" role="alert">
-                            No routine round. Please <span  data-bs-toggle="modal" data-bs-target="#createRoutineModal" class="text-decoration-underline text-primary" style="cursor: pointer;">create</span> your first routine.
-                        </div>
-                    {% endif %}
-                </div>
+                
+                {% include 'partials/routines.html' %}
             </div>
         </div>
     </div>
@@ -65,14 +39,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label class="form-label">Routine name</label>
-                        <input type="text" name="name" class="form-control" placeholder="eg- 2nd sem CSE routine">
-                    </div>
-
-                    <button role="submit" class="btn btn-primary">Submit</button>
-                </form>
+                {% include 'forms/routine-form.html' %}
             </div>
           </div>
         </div>

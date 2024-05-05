@@ -22,7 +22,9 @@ def create_routine(request):
     if form.is_valid():
         name = form.cleaned_data["name"]
         models.Routine.objects.create(name=name, user=request.user)
-        response = HttpResponse()
+        routines = request.user.routine_set.all()
+        response = render(request, "partials/routines-with-form.html", {"routines": routines})
+        response["HX-Trigger"] = "closeRoutineFormModal"
         return response
 
     return render(request, "forms/routine-form.html", {"routineForm": form})
