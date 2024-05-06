@@ -68,3 +68,21 @@ def edit_routine(request, routine_id):
         return render(request, "edit-routine.html", context)
     except models.Routine.DoesNotExist:
         raise Http404
+
+
+def edit_schedule(request, routine_id, day):
+    if day not in dict(models.Class.day_choices).values():
+        raise Http404
+
+    try:
+        routine = models.Routine.objects.get(id=routine_id, user=request.user)
+        day_int_value = list(filter(lambda x: x[1] == day, models.Class.day_choices))[0][0]
+        classes = routine.class_set.filter(day=day_int_value)
+        context = {
+            "routine": routine,
+            "day": day,
+            "classes": classes
+        }
+        return render(request, "edit-schedule.html", context)
+    except models.Routine.DoesNotExist:
+        raise Http404
