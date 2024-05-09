@@ -48,7 +48,7 @@
                     <td>{{ day }}</td>
                     <td>{{ count }}</td>
                     <td>
-                      <a href="{% url 'edit-schedule' routine.id day %}" class="btn btn-sm btn-outline-primary">View / Edit</a>
+                      <a href="{% url 'schedule-page' routine.id day %}" class="btn btn-sm btn-outline-primary">View / Edit</a>
                     </td>
                   </tr>
                   {% endfor %}

@@ -1,6 +1,5 @@
 // Enable bootstrap tooltips
 const enableTooltips = function () {
-    console.log("called");
     const tooltipTriggerList = document.querySelectorAll(
         '[data-bs-toggle="tooltip"]'
     );

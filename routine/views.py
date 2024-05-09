@@ -2,17 +2,19 @@ from django.shortcuts import render
 from accounts.decorators import redirect_authenticated_user
 from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST, require_http_methods
+from django.views.decorators.http import require_POST, require_http_methods, require_GET
 from django.db.models import Count
 
 from routine import forms, models
 
 @redirect_authenticated_user
-def home(request):
+@require_GET
+def home_page(request):
     return render(request, "home.html")
 
 @login_required
-def dashboard(request):
+@require_GET
+def dashboard_page(request):
     routines = request.user.routine_set.all()
     return render(request, "dashboard.html", {"routines": routines})
 
@@ -44,7 +46,8 @@ def delete_routine(request, routine_id):
         raise Http404
 
 @login_required
-def edit_routine(request, routine_id):
+@require_GET
+def routine_page(request, routine_id):
     try:
         routine = models.Routine.objects.get(id=routine_id, user=request.user)
 
@@ -69,8 +72,9 @@ def edit_routine(request, routine_id):
     except models.Routine.DoesNotExist:
         raise Http404
 
-
-def edit_schedule(request, routine_id, day):
+@login_required
+@require_GET
+def schedule_page(request, routine_id, day):
     if day not in dict(models.Class.day_choices).values():
         raise Http404
 
@@ -85,4 +89,57 @@ def edit_schedule(request, routine_id, day):
         }
         return render(request, "edit-schedule.html", context)
     except models.Routine.DoesNotExist:
+        raise Http404
+
+@login_required
+@require_POST
+def create_schedule(request, routine_id, day):
+    if day not in dict(models.Class.day_choices).values():
+        raise Http404
+
+    try:
+        routine = models.Routine.objects.get(id=routine_id, user=request.user)
+        day_int_value = list(filter(lambda x: x[1] == day, models.Class.day_choices))[0][0]
+        form = forms.ScheduleForm(request.POST)
+        context = {
+            "routine": routine,
+            "day": day,
+        }
+
+        if form.is_valid():
+            models.Class.objects.create(routine=routine, day=day_int_value,
+                start_time=form.cleaned_data["start_time"],
+                end_time=form.cleaned_data["end_time"],
+                subject=form.cleaned_data["subject"],
+                teacher_short_name=form.cleaned_data["teacher_short_name"])
+            
+            context.update({
+                "classes": routine.class_set.filter(day=day_int_value),
+            })
+            response = render(request, "partials/schedules-with-form.html", context)
+            response["HX-Trigger"] = "close-modal"
+
+            return response
+
+        context["scheduleForm"] = form
+        return render(request, "forms/add-schedule-form.html", context)
+
+    except models.Routine.DoesNotExist:
+        raise Http404
+
+def delete_schedule(request, class_id):
+    try:
+        class_obj = models.Class.objects.get(id=class_id, routine__user=request.user)
+        routine_id = class_obj.routine_id
+        day = class_obj.day
+        class_obj.delete()
+
+        classes = models.Class.objects.filter(routine_id=routine_id, day=day)
+        context = {
+            "classes": classes,
+            "oob": True
+        }
+
+        return render(request, "partials/schedules.html", context)
+    except models.Class.DoesNotExist:
         raise Http404
