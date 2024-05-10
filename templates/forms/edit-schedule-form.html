@@ -1,0 +1,85 @@
+<form id="editScheduleForm" hx-post="{% url 'edit-schedule' class.id %}" hx-swap="outerHTML">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label class="form-label">Subject</label>
+
+        <div class="input-group has-validation">
+            <input
+                type="text"
+                name="subject"
+                class="form-control{% if scheduleForm.subject.errors %} is-invalid{% endif %}"
+                value="{{ scheduleForm.data.subject }}"
+                placeholder="eg- Biology"
+                required
+            />
+            {% if scheduleForm.subject.errors %}
+            <div class="invalid-feedback">
+                {{ scheduleForm.subject.errors.0 }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Teacher's short Name</label>
+
+        <div class="input-group has-validation">
+            <input
+                type="text"
+                name="teacher_short_name"
+                class="form-control{% if scheduleForm.teacher_short_name.errors %} is-invalid{% endif %}"
+                value="{{scheduleForm.data.teacher_short_name}}"
+                placeholder="eg- PG"
+                required
+            />
+            {% if scheduleForm.teacher_short_name.errors %}
+            <div class="invalid-feedback">
+                {{ scheduleForm.teacher_short_name.errors.0 }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Start Time</label>
+
+        <div class="input-group has-validation">
+            <input
+                type="time"
+                name="start_time"
+                class="form-control{% if scheduleForm.start_time.errors %} is-invalid{% endif %}"
+                value="{{ scheduleForm.data.start_time|time:'H:i' }}"
+                required
+            />
+            {% if scheduleForm.start_time.errors %}
+            <div class="invalid-feedback">
+                {{ scheduleForm.start_time.errors.0 }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">End Time</label>
+
+        <div class="input-group has-validation">
+            <input
+                type="time"
+                name="end_time"
+                class="form-control{% if scheduleForm.end_time.errors %} is-invalid{% endif %}"
+                value="{{ scheduleForm.data.end_time|time:'H:i' }}"
+                required
+            />
+            {% if scheduleForm.end_time.errors %}
+            <div class="invalid-feedback">
+                {{ scheduleForm.end_time.errors.0 }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <button role="submit" class="btn btn-primary">
+        Submit
+    </button>
+</form>

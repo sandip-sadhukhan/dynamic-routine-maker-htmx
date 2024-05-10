@@ -103,4 +103,36 @@
     </div>
 </div>
 
+<!-- Edit routine modal -->
+<div
+    class="modal fade"
+    id="editScheduleModal"
+    tabindex="-1"
+    aria-labelledby="editScheduleModalLabel"
+    aria-hidden="true"
+    hx-on:close-modal="bootstrap.Modal.getInstance(this).hide()"
+>
+    <div class="modal-dialog">
+        <div class="modal-content" id="editScheduleModalContent">
+            <div class="modal-header">
+                <h1
+                    class="modal-title fs-5"
+                    id="editScheduleModalLabel"
+                >
+                    Edit schedule
+                </h1>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <form id="editScheduleForm"></form>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

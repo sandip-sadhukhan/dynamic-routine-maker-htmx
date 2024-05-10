@@ -127,6 +127,8 @@ def create_schedule(request, routine_id, day):
     except models.Routine.DoesNotExist:
         raise Http404
 
+@login_required
+@require_http_methods(["DELETE"])
 def delete_schedule(request, class_id):
     try:
         class_obj = models.Class.objects.get(id=class_id, routine__user=request.user)
@@ -141,5 +143,58 @@ def delete_schedule(request, class_id):
         }
 
         return render(request, "partials/schedules.html", context)
+    except models.Class.DoesNotExist:
+        raise Http404
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def edit_schedule(request, class_id):
+    try:
+        class_obj = models.Class.objects.get(id=class_id, routine__user=request.user)
+        routine = class_obj.routine
+
+        if request.method == "GET":
+            form = forms.ScheduleForm({
+                "start_time": class_obj.start_time,
+                "end_time": class_obj.end_time,
+                "subject": class_obj.subject,
+                "teacher_short_name": class_obj.teacher_short_name,
+            })
+            context = {
+                "scheduleForm": form,
+                "routine": routine,
+                "class": class_obj
+            }
+            return render(request, "forms/edit-schedule-form.html", context)
+        else:
+            form = forms.ScheduleForm(request.POST)
+
+            if form.is_valid():
+                class_obj.start_time = form.cleaned_data["start_time"]
+                class_obj.end_time = form.cleaned_data["end_time"]
+                class_obj.subject = form.cleaned_data["subject"]
+                class_obj.teacher_short_name = form.cleaned_data["teacher_short_name"]
+                class_obj.save()
+
+                classes = models.Class.objects\
+                    .filter(routine_id=class_obj.routine_id, day=class_obj.day)
+
+                context = {
+                    "classes": classes,
+                    "oob": True
+                }
+
+                response = render(request, "partials/schedules.html", context)
+                response["HX-Trigger"] = "close-modal"
+                response["HX-Reswap"] = "none"
+                return response
+            else:
+                context = {
+                "scheduleForm": form,
+                "routine": routine,
+                "class": class_obj
+                }
+                return render(request, "forms/edit-schedule-form.html", context)
+
     except models.Class.DoesNotExist:
         raise Http404

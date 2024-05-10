@@ -10,4 +10,5 @@ urlpatterns = [
     path("routine/<int:routine_id>/<str:day>/", views.schedule_page, name="schedule-page"),
     path("create-schedule/<int:routine_id>/<str:day>/", views.create_schedule, name="create-schedule"),
     path("delete-schedule/<int:class_id>/", views.delete_schedule, name="delete-schedule"),
+    path("edit-schedule/<int:class_id>/", views.edit_schedule, name="edit-schedule"),
 ]

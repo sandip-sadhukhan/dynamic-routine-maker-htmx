@@ -20,7 +20,7 @@
                 <td>{{ class.teacher_short_name }}</td>
                 <td>{{ class.start_time|time:"H:i" }} - {{ class.end_time|time:"H:i" }}</td>
                 <td class="d-flex gap-2">
-                    <a href="#" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <a hx-get="{% url 'edit-schedule' class.id %}" hx-swap="outerHTML" hx-target="#editScheduleForm"  class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editScheduleModal">Edit</a>
                     <a href="#" class="btn btn-sm btn-outline-danger" hx-delete="{% url 'delete-schedule' class.id %}" hx-swap="none"  hx-headers='{"X-CSRFTOKEN": "{{ csrf_token }}"}' hx-confirm="Are you sure? You can't undo this action afterwards." >Delete</a>
                 </td>
             </tr>
