@@ -1,0 +1,25 @@
+<form hx-post="{% url 'edit-routine' routine.id %}" hx-swap="outerHTML" id="editRoutineForm">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label class="form-label">Routine name</label>
+
+        <div class="input-group has-validation">
+        <input
+            type="text"
+            name="name"
+            class="form-control{% if routineForm.name.errors %} is-invalid{% endif %}"
+            value="{{ routineForm.data.name}}"
+            placeholder="eg- 2nd sem CSE routine"
+            required
+        >
+        {% if routineForm.name.errors %}
+        <div class="invalid-feedback">
+            {{ routineForm.name.errors.0 }}
+        </div>
+        {% endif %}
+        </div>
+    </div>
+
+    <button role="submit" class="btn btn-primary">Submit</button>
+</form>

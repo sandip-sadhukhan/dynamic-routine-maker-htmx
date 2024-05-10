@@ -1,0 +1,23 @@
+<div id="header-section">
+
+    <!-- Breadcrumbs -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ routine.name }}</li>
+        </ol>
+    </nav>
+    
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-3">
+        <h2>{{ routine.name }}</h2>
+        <a data-bs-toggle="tooltip" data-bs-title="Edit routine name" style="cursor: pointer;">
+            <i data-bs-toggle="modal" data-bs-target="#editRoutineModal" hx-get="{% url 'edit-routine' routine.id %}" hx-swap="outerHTML" hx-target="#editRoutineForm" class="bi bi-gear-fill text-success fs-5"></i>
+        </a>
+        </div>
+        
+        <div>
+        <a href="#" data-bs-toggle="tooltip" data-bs-title="Open your routine public page"><i class="bi bi-box-arrow-up-right"></i></a>
+        </div>
+    </div>
+</div>

@@ -198,3 +198,43 @@ def edit_schedule(request, class_id):
 
     except models.Class.DoesNotExist:
         raise Http404
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def edit_routine(request, routine_id):
+    try:
+        routine = models.Routine.objects.get(id=routine_id, user=request.user)
+
+        if request.method == "GET":
+            form = forms.RoutineForm({
+                "name": routine.name
+            })
+            context = {
+                "routineForm": form,
+                "routine": routine,
+            }
+            return render(request, "forms/edit-routine-form.html", context)
+        else:
+            form = forms.RoutineForm(request.POST)
+
+            if form.is_valid():
+                routine.name = form.cleaned_data["name"]
+                routine.save()
+
+                context = {
+                    "routine": routine,
+                }
+
+                response = render(request, "partials/routine-header-section.html", context)
+                response["HX-Trigger"] = "close-modal"
+                response["HX-Retarget"] = "#header-section"
+                return response
+            else:
+                context = {
+                "routineForm": form,
+                "routine": routine,
+                }
+                return render(request, "forms/edit-routine-form.html", context)
+
+    except models.Class.DoesNotExist:
+        raise Http404

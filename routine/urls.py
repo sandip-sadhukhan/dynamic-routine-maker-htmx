@@ -8,6 +8,7 @@ urlpatterns = [
     path("delete-routine/<int:routine_id>/", views.delete_routine, name="delete-routine"),
     path("routine/<int:routine_id>/", views.routine_page, name="routine-page"),
     path("routine/<int:routine_id>/<str:day>/", views.schedule_page, name="schedule-page"),
+    path("edit-routine/<int:routine_id>/", views.edit_routine, name="edit-routine"),
     path("create-schedule/<int:routine_id>/<str:day>/", views.create_schedule, name="create-schedule"),
     path("delete-schedule/<int:class_id>/", views.delete_schedule, name="delete-schedule"),
     path("edit-schedule/<int:class_id>/", views.edit_schedule, name="edit-schedule"),
