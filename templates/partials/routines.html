@@ -7,7 +7,7 @@
                 </a>
 
                 <div class="d-flex align-items-center gap-2">
-                    <a href="#" target="_blank" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-title="Open your public routine link">
+                    <a href="{% url 'public-routine' routine.slug %}" target="_blank" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-title="Open your public routine link">
                         <i class="bi bi-box-arrow-up-right"></i>
                     </a>
                     <a href="{% url 'routine-page' routine.id %}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-title="Edit your routine">

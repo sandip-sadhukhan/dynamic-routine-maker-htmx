@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render
 from accounts.decorators import redirect_authenticated_user
 from django.http import HttpResponse, Http404
@@ -81,7 +83,7 @@ def schedule_page(request, routine_id, day):
     try:
         routine = models.Routine.objects.get(id=routine_id, user=request.user)
         day_int_value = list(filter(lambda x: x[1] == day, models.Class.day_choices))[0][0]
-        classes = routine.class_set.filter(day=day_int_value)
+        classes = routine.class_set.filter(day=day_int_value).order_by("start_time")
         context = {
             "routine": routine,
             "day": day,
@@ -114,7 +116,7 @@ def create_schedule(request, routine_id, day):
                 teacher_short_name=form.cleaned_data["teacher_short_name"])
             
             context.update({
-                "classes": routine.class_set.filter(day=day_int_value),
+                "classes": routine.class_set.filter(day=day_int_value).order_by("start_time"),
             })
             response = render(request, "partials/schedules-with-form.html", context)
             response["HX-Trigger"] = "close-modal"
@@ -136,7 +138,9 @@ def delete_schedule(request, class_id):
         day = class_obj.day
         class_obj.delete()
 
-        classes = models.Class.objects.filter(routine_id=routine_id, day=day)
+        classes = models.Class.objects\
+            .filter(routine_id=routine_id, day=day)\
+            .order_by("start_time")
         context = {
             "classes": classes,
             "oob": True
@@ -177,7 +181,8 @@ def edit_schedule(request, class_id):
                 class_obj.save()
 
                 classes = models.Class.objects\
-                    .filter(routine_id=class_obj.routine_id, day=class_obj.day)
+                    .filter(routine_id=class_obj.routine_id, day=class_obj.day)\
+                    .order_by("start_time")
 
                 context = {
                     "classes": classes,
@@ -237,4 +242,19 @@ def edit_routine(request, routine_id):
                 return render(request, "forms/edit-routine-form.html", context)
 
     except models.Class.DoesNotExist:
+        raise Http404
+
+@require_GET
+def public_routine(request, slug):
+    try:
+        routine = models.Routine.objects.get(slug=slug)
+        day = datetime.datetime.today().isocalendar().weekday % 7
+        classes = models.Class.objects.filter(routine=routine, day=day).order_by("start_time")
+        context = {
+            "routine": routine,
+            "classes": classes
+        }
+
+        return render(request, "public-routine.html", context)
+    except models.Routine.DoesNotExist:
         raise Http404

@@ -46,7 +46,8 @@
                 <h2>{{ day }} - {{ routine.name }}</h2>
                 <div>
                     <a
-                        href="#"
+                        href="{% url 'public-routine' routine.slug %}"
+                        target="_blank"
                         data-bs-toggle="tooltip"
                         data-bs-title="Open your routine public page"
                         ><i class="bi bi-box-arrow-up-right"></i

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}{{routine.name}} | Dynamic Routine maker{% endblock %}
+
+{% block content %}
+    <!-- Navbar -->
+    <div class="text-bg-primary py-2 shadow">
+        <div class="container">
+            <h1 class="text-center fs-3 m-0">Upcoming Classes</h1>
+        </div>
+    </div>
+
+    <!-- Classes -->
+    <div class="container my-5" style="min-height: 70vh;">
+        <div class="row">
+            <div class="col-lg-7 col-md-9 mx-auto">
+                {% if classes|length == 0 %}
+                <div class="alert alert-primary text-center">Hurrah! Today is Holiday 😺</div>
+                {% else %}
+                <table class="table table-striped table-hover text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">Period</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Subject</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for class in classes %}
+                        <tr>
+                            <td>{{ forloop.counter}}</td>
+                            <td>{{ class.start_time|time:"H:i" }} - {{ class.end_time|time:"H:i" }}</td>
+                            <td>
+                                {{ class.subject }} <br>
+                                ({{ class.teacher_short_name }})
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <p class="text-center text-small text-muted mt-3">Created by Dynamic Routine Maker | All rights reserved</p>
+
+
+
+{% endblock %}
