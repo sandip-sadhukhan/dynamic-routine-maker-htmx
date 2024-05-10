@@ -23,6 +23,8 @@ Anyone can create their online routine then they will get an unique link which t
 
 ## Demo
 
+https://github.com/sandip-sadhukhan/dynamic-routine-maker-htmx/assets/44361140/159474fb-23b6-42c5-b18b-31f66232babf
+
 ## Summery
 
 I built this project to learn about [HTMX](https://htmx.org/) technology. I learn how to use HTMX tags, how to build dynamic websites without using React or any modern frontend framework/libraries.
