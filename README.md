@@ -20,6 +20,7 @@ Anyone can create their online routine then they will get an unique link which t
 -   Vanila Javascript
 -   HTMX
 -   Django
+-   MySQL/Sqlite (By default sqlite3 will be used, but you can configure `.env` file to use mysql database.)
 
 ## Demo
 
